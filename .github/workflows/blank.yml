@@ -1,9 +1,8 @@
-name: Get Rank Value
-
+name: Get My Leetcode Rank Value
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 12,0 * * *'
 permissions: write-all
 jobs:
   extract-rank:
