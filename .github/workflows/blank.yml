@@ -12,11 +12,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get HTML content
+      - name: Install dependencies
         run: |
-          html=$(curl -s https://leetcode.com/imacemarx)
+          sudo apt-get update
+          sudo apt-get install -y chromium-browser
+          npm install puppeteer
 
-      - name: Extract Rank value
+      - name: Get Rank value
         run: |
-          rank=$(echo "$html" | sed -n 's/.*Rank<\/span><span class="ttext-label-1 dark:text-dark-label-1 font-medium">\(.*\)<\/span>.*/\1/p')
-          echo "Rank: $rank"
+          node -e '
+          const puppeteer = require("puppeteer");
+
+          (async () => {
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+            await page.goto("https://leetcode.com/imacemarx", { waitUntil: "networkidle0" });
+            const rankElement = await page.$(".ttext-label-1.dark\\:text-dark-label-1.font-medium");
+            const rankValue = await rankElement.evaluate((el) => el.innerText);
+            console.log("Rank:", rankValue);
+            await browser.close();
+          })();
+          '
