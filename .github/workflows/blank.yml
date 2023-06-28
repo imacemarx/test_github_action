@@ -18,5 +18,5 @@ jobs:
 
       - name: Extract Rank value
         run: |
-          rank=$(echo "$html" | grep -oP '(?<=<span class="text-label-2 dark:text-dark-label-2">Rank</span><span class="ttext-label-1 dark:text-dark-label-1 font-medium">)[^<]+')
+          rank=$(echo "$html" | sed -n 's/.*Rank<\/span><span class="ttext-label-1 dark:text-dark-label-1 font-medium">\(.*\)<\/span>.*/\1/p')
           echo "Rank: $rank"
