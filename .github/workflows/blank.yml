@@ -33,8 +33,7 @@ jobs:
             console.log("Rank:", rankValue);
 
             // Format the current date and time
-            const currentDate = new Date().toISOString().replace(/[-:.TZ]/g, "");
-            const formattedDate = `${currentDate.substr(0, 8)}T${currentDate.substr(8)}`;
+            const currentDate = new Date().toISOString()
 
             // Read existing file contents
             let existingContent = "";
@@ -46,7 +45,7 @@ jobs:
             }
 
             // Update file with new rank value and current date
-            const updatedContent = `${formattedDate}:${rankValue}\n${existingContent}`;
+            const updatedContent = `${currentDate}:${rankValue}\n${existingContent}`;
             fs.writeFileSync("myrank", updatedContent);
 
             await browser.close();
