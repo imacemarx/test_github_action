@@ -1,0 +1,22 @@
+name: Get Rank Value
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  extract-rank:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get HTML content
+        run: |
+          html=$(curl -s https://leetcode.com/imacemarx)
+
+      - name: Extract Rank value
+        run: |
+          rank=$(echo "$html" | grep -oP '(?<=<span class="text-label-2 dark:text-dark-label-2">Rank</span><span class="ttext-label-1 dark:text-dark-label-1 font-medium">)[^<]+')
+          echo "Rank: $rank"
